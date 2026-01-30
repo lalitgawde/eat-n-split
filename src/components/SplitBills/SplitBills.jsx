@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SplitsBills.module.css";
 
 function SplitBills({ selectedItem, changeBalanceHandler }) {
   const [billValue, setBillValue] = useState("");
   const [yourExpense, setYourExpense] = useState("");
   const [whoIsPaying, setWhoIsPaying] = useState("user");
+  const [splitEqually, setSplitEqually] = useState(false);
 
   const friendExpense =
     billValue && (yourExpense || yourExpense === 0)
       ? billValue - yourExpense
       : "";
+
+  useEffect(() => {
+    if (splitEqually && billValue) {
+      const splitValue = billValue / 2;
+      setYourExpense(splitValue);
+    } else if (!splitEqually) {
+      setYourExpense("");
+    }
+  }, [splitEqually, billValue]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,11 +50,23 @@ function SplitBills({ selectedItem, changeBalanceHandler }) {
       <h2>Split a bill with {selectedItem?.name}</h2>
       <form className={styles["split-bills-form"]} onSubmit={handleSubmit}>
         <label>💰 Bill value</label>
-        <input
-          type="text"
-          value={billValue}
-          onChange={(e) => setBillValue(Number(e.target.value))}
-        />
+        <div>
+          <input
+            type="text"
+            value={billValue}
+            onChange={(e) => setBillValue(Number(e.target.value))}
+          />
+          <div className={styles["checkbox-container"]}>
+            <input
+              type="checkbox"
+              name="splitEqually"
+              id="splitEqually"
+              checked={splitEqually}
+              onChange={(e) => setSplitEqually(e.target.checked)}
+            />
+            <label htmlFor="splitEqually">Split Equally</label>
+          </div>
+        </div>
 
         <label>🧍‍♀️ Your expense</label>
         <input
