@@ -24,7 +24,7 @@ function SplitBills({ selectedItem, changeBalanceHandler }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     let newBalance;
-    if (!billValue || !yourExpense) return;
+    if (!billValue || (!yourExpense && yourExpense !== 0)) return;
     if (whoIsPaying === "user") {
       newBalance = selectedItem.balance + friendExpense;
     } else {
@@ -36,6 +36,7 @@ function SplitBills({ selectedItem, changeBalanceHandler }) {
     setBillValue("");
     setYourExpense("");
     setWhoIsPaying("user");
+    setSplitEqually(false);
   };
 
   if (!selectedItem?.name) {

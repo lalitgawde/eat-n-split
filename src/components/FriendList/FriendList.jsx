@@ -2,6 +2,26 @@ import React, { useEffect, useState } from "react";
 import styles from "./FriendList.module.css";
 import { initialFriends } from "../../data";
 import AddFriend from "../AddFriend/AddFriend";
+import FriendItem from "../FriendItem/FriendItem";
+
+function messageColor(friend) {
+  let color = "";
+  let msg = `You and ${friend.name} are even`;
+
+  if (friend.balance > 0) {
+    color = "#66a80f";
+    msg = `${friend.name} owe me $${friend.balance}`;
+  } else if (friend.balance < 0) {
+    color = "#e03131";
+    msg = `You owe ${friend.name} $${Math.abs(friend.balance)}`;
+  }
+
+  return (
+    <p className={styles.message} style={color !== "" ? { color } : {}}>
+      {msg}
+    </p>
+  );
+}
 
 function FriendList({ selectedItem, onSelect }) {
   const [isAddFriend, setIsAddFriend] = useState(false);
@@ -31,37 +51,14 @@ function FriendList({ selectedItem, onSelect }) {
       <ul style={{ maxHeight: `${!isAddFriend ? "45vh" : "25vh"}` }}>
         {friends.map((friend) => {
           const isSelected = friend.id === selectedItem?.id;
-          const msg =
-            friend.balance === 0 ? (
-              <p className={styles.message}>You and {friend.name} are even</p>
-            ) : friend.balance > 0 ? (
-              <p className={styles.message} style={{ color: "#66a80f" }}>
-                {friend.name} owe me ${friend.balance}
-              </p>
-            ) : (
-              <p className={styles.message} style={{ color: "#e03131" }}>
-                You owe {friend.name} ${Math.abs(friend.balance)}
-              </p>
-            );
+          const msg = messageColor(friend);
           return (
-            <li
-              className={`${styles.friendListItem} ${isSelected ? styles.selected : ""}`}
-              key={friend.id}
-            >
-              <div className={styles.info}>
-                <img src={friend.image} alt="profile image" />
-                <div>
-                  <p className={styles.name}>{friend.name}</p>
-                  {msg}
-                </div>
-              </div>
-              <button
-                className={styles.button}
-                onClick={() => onSelect(isSelected, friend)}
-              >
-                {!isSelected ? "Select" : "Close"}
-              </button>
-            </li>
+            <FriendItem
+              friend={friend}
+              isSelected={isSelected}
+              onSelect={onSelect}
+              message={msg}
+            />
           );
         })}
       </ul>

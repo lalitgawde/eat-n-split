@@ -8,37 +8,6 @@
   overflow: auto;
 }
 
-.friendListItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.selected,
-.friendListItem li:hover {
-  background-color: #fcead3;
-}
-
-.info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.info img {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-}
-
-.name {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
 .message {
   font-size: 1.3rem;
   font-weight: 600;
