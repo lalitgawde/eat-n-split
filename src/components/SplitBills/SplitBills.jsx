@@ -6,7 +6,10 @@ function SplitBills({ selectedItem, changeBalanceHandler }) {
   const [yourExpense, setYourExpense] = useState("");
   const [whoIsPaying, setWhoIsPaying] = useState("user");
 
-  const friendExpense = billValue && yourExpense ? billValue - yourExpense : "";
+  const friendExpense =
+    billValue && (yourExpense || yourExpense === 0)
+      ? billValue - yourExpense
+      : "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,14 +43,14 @@ function SplitBills({ selectedItem, changeBalanceHandler }) {
         <input
           type="text"
           value={billValue}
-          onChange={(e) => setBillValue(e.target.value)}
+          onChange={(e) => setBillValue(Number(e.target.value))}
         />
 
         <label>🧍‍♀️ Your expense</label>
         <input
           type="text"
           value={yourExpense}
-          onChange={(e) => setYourExpense(e.target.value)}
+          onChange={(e) => setYourExpense(Number(e.target.value))}
         />
 
         <label>👫 {selectedItem?.name}'s expense</label>
